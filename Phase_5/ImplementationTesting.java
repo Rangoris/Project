@@ -8,8 +8,15 @@ class ImplementationTesting{
          aVM.addSoda("Coca-cola", 1.25);
          aVM.reStock("Red Bull");
          aVM.reStock("Sprite");
+         aVM.reStock("Coca-cola");
          
-         System.out.println(aVM.buySoda(2));
+         
+         
+         aVM.buySoda(1);
+         aVM.buySoda(2);
+         aVM.buySoda(3);
+         
+         aVM.withDraw(6);
       }catch(IllegalArgumentException e){
          System.out.println("error!");
       }
@@ -23,6 +30,8 @@ class ImplementationTesting{
       }catch(IllegalArgumentException e){
          System.out.println("error!");
       }
+      
+      VendingMachine.removeMachine("Dining Hall2");
       
       LinkedList machineList = VendingMachine.getMachines();
       System.out.println(machineList);

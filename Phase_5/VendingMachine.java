@@ -5,6 +5,7 @@ class VendingMachine implements Searchable{
    private static LinkedList<VendingMachine> machineList = new LinkedList<VendingMachine>();
    private LinkedList<Soda> sodaList = new LinkedList<Soda>();   
    private String name;
+   double balance;
    
    public VendingMachine(String _name) throws IllegalArgumentException{
       this.name = _name;
@@ -35,20 +36,34 @@ class VendingMachine implements Searchable{
       return sodaList.remove(soda);
    }
    
+   /**
+      buy a soda based on the index (One based index)
+      for example with a list of items 1) coke, 2) pepsi
+      a selection of 1 would be coke.
+      @param index
+      @return true if transaction succeeded false otherwise
+   */
    public boolean buySoda(int index){
       Node aNode = sodaList.queryByIndex(index);
       if(aNode == null){return false;}
       if(!(aNode.getData() instanceof Soda)){ return false;}
       Soda aSoda = (Soda)aNode.getData();
-      return aSoda.buySoda();
+      boolean result = aSoda.buySoda();
+      if(result){balance += aSoda.getPrice();}
+      return result;
    }
    
    public double getBal(){
-      return -99;
+      return this.balance;
    }
    
-   public double withDraw(){
-      return -99;
+   public boolean withDraw(double amount){
+      if(amount <= balance){
+         balance -= amount; 
+         return true;           
+      }else{
+         return false;
+      }
    }
    
    public boolean reStock(String sodaName){
