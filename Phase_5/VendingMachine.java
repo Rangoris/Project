@@ -51,12 +51,20 @@ class VendingMachine implements Searchable{
       return -99;
    }
    
-   public Soda getSoda(String name){
+   public boolean reStock(String sodaName){
+      if(sodaList.query(sodaName) == null){ return false;}
+      if(!(sodaList.query(sodaName).getData() instanceof Soda)){return false;}
+      Soda aSoda = sodaList.query(sodaName).getData();
+      aSoda.reStock();
+      return true;
+   }
+   
+   /*public Soda getSoda(String name){
       if(sodaList.query(name) == null){ return null;}
       if(!(sodaList.query(name).getData() instanceof Soda)){return null;}
       Soda aSoda = (Soda)(sodaList.query(name).getData());
       return aSoda;
-   }
+   }*/
    
    //____________________________________
    
