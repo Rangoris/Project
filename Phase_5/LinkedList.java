@@ -74,6 +74,10 @@ class LinkedList<D>{
       return false;
    }
    
+   /**
+   query the linked list for a value with the given name
+   returns the node 
+   */
    public Node<D> query(String name){
       Node<D> curNode = this.tail;
       
@@ -96,17 +100,6 @@ class LinkedList<D>{
          curNode = curNode.getNextNode();
       }
       return null;
-   }
-   
-   public double getTotal(){
-      double total = 0;
-      Node<D> curNode = this.tail;
-      for(int x = 0; x < length; x++){
-         Searchable anItem = (Searchable)curNode.getData();
-         total += anItem.getBal();
-         curNode = curNode.getNextNode();
-      }
-      return total;
    }
 
    public String toString(){

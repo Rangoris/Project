@@ -6,11 +6,12 @@ class ImplementationTesting{
          aVM.addSoda("Red Bull", 2.5);
          aVM.addSoda("Sprite", 1.5);
          aVM.addSoda("Coca-cola", 1.25);
+         
+         aVM.reStock(1);
          aVM.reStock("Red Bull");
-         aVM.reStock("Sprite");
-         aVM.reStock("Coca-cola");
          
-         
+         aVM.setPrice("Red Bull", 1.25);
+         aVM.setPrice(2, 3.5);
          
          aVM.buySoda(1);
          aVM.buySoda(2);
@@ -26,14 +27,11 @@ class ImplementationTesting{
          aVM2.addSoda("Dr. Pepper", 1.50);
          aVM2.addSoda("Dr. Thunder", 1.25);
          aVM2.addSoda("Mr. Pibb", 1.25);
-         VendingMachine.removeMachine("South Wing");
       }catch(IllegalArgumentException e){
          System.out.println("error!");
       }
       
-      VendingMachine.removeMachine("Dining Hall2");
-      
       LinkedList machineList = VendingMachine.getMachines();
-      System.out.println(machineList);
+      System.out.println(VendingMachine.getMachines().queryByIndex(1));
    }
 }

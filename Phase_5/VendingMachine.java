@@ -32,6 +32,10 @@ class VendingMachine implements Searchable{
       return sodaList.add(new Node<Soda>(aSoda));
    }
    
+   public boolean addSoda(String sodaName){
+      return addSoda(sodaName, 0);
+   }
+   
    public boolean removeSoda(String soda){
       return sodaList.remove(soda);
    }
@@ -53,10 +57,19 @@ class VendingMachine implements Searchable{
       return result;
    }
    
+   /**
+   gets the current balance
+   @return balance of all cash in soda machine
+   */
    public double getBal(){
       return this.balance;
    }
    
+   /**
+   with draw allows an amount to be removed from the soda machine
+   @param amount
+   @param validation of withdraw
+   */
    public boolean withDraw(double amount){
       if(amount <= balance){
          balance -= amount; 
@@ -66,12 +79,66 @@ class VendingMachine implements Searchable{
       }
    }
    
+   /**
+   restock a given soda type
+   @param soda name
+   @return validates if reStock was successfull;
+   */
    public boolean reStock(String sodaName){
       if(sodaList.query(sodaName) == null){ return false;}
       if(!(sodaList.query(sodaName).getData() instanceof Soda)){return false;}
       Soda aSoda = sodaList.query(sodaName).getData();
       aSoda.reStock();
       return true;
+   }
+   
+   public boolean reStock(String sodaName, int amountToStock){
+      if(sodaList.query(sodaName) == null){ return false;}
+      if(!(sodaList.query(sodaName).getData() instanceof Soda)){return false;}
+      Soda aSoda = sodaList.query(sodaName).getData();
+      return aSoda.reStock(amountToStock);
+   }
+   
+   public boolean reStock(int sodaIndex, int amountToStock){
+      Node<Soda> aNode = sodaList.queryByIndex(sodaIndex);
+      if(aNode == null){return false;}
+      if(!(aNode.getData() instanceof Soda)){return false;}
+      Soda aSoda = aNode.getData();
+      return aSoda.reStock(amountToStock);
+   }
+   
+   public boolean reStock(int sodaIndex){
+      Node<Soda> aNode = sodaList.queryByIndex(sodaIndex);
+      if(aNode == null){return false;}
+      if(!(aNode.getData() instanceof Soda)){return false;}
+      Soda aSoda = aNode.getData();
+      return aSoda.reStock();
+   }
+      
+   /** 
+   set the price of a soda in the machine
+   @param soda name
+   @param price
+   */
+   public boolean setPrice(String sodaName, double price){
+      Node<Soda> aNode = sodaList.query(sodaName);
+      if(aNode == null){return false;}
+      if(!(aNode.getData() instanceof Soda)){return false;}
+      Soda aSoda = aNode.getData();
+      return aSoda.setPrice(price);
+   }
+   
+   /**
+   set the rpice of a soda in the machine
+   @param soda index
+   @param price
+   */
+   public boolean setPrice(int sodaIndex, double price){
+      Node<Soda> aNode = sodaList.queryByIndex(sodaIndex);
+      if(aNode == null){return false;}
+      if(!(aNode.getData() instanceof Soda)){return false;}
+      Soda aSoda = aNode.getData();
+      return aSoda.setPrice(price);
    }
    
    /*public Soda getSoda(String name){
@@ -87,10 +154,18 @@ class VendingMachine implements Searchable{
       return machineList;
    }
    
+   /**
+   remove a given machine
+   @param machine
+   @return validation
+   */
    public static boolean removeMachine(String name){
       return machineList.remove(name);
    }
    
+   /**
+   to string allows a quick overview of the soda machine
+   */
    public String toString(){
       return String.format("Report%nName: %s%nBalance: %.2f%n%s", name, getBal(), sodaList);
    }
