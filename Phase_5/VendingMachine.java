@@ -1,5 +1,8 @@
 import java.io.PrintWriter;
 import java.io.FileNotFoundException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.Scanner;
 
 class VendingMachine implements Searchable{
@@ -170,7 +173,12 @@ class VendingMachine implements Searchable{
       return (aSoda == null)? false: aSoda.setPrice(price);
    }
    
+   public int getNumSodas(){
+      return sodaList.getLength();
+   }
+   
    //____________________________________
+   
    /**
    gets the linked list of all vending machines
    */
@@ -188,8 +196,32 @@ class VendingMachine implements Searchable{
    }
    
    //To Do
-   public static boolean saveData(String fileName){
+   public static boolean loadData(String fileName){
+      try{
+         Scanner in = new Scanner(new FileInputStream(new File(fileName)));
+      }catch(FileNotFoundException e){
+         e.printStackTrace();
+      }
       return false;
+   }
+   
+   public static boolean saveData(String fileName){
+      try{
+         PrintWriter out = new PrintWriter(new FileOutputStream(new File(fileName)));
+         Node<VendingMachine> curMachine = machineList.getCursor();
+         
+         while(curMachine != null){
+            out.printf("<Machine>%n   <Name>%s</Name>%n   <bal>%s</bal>%n</Machine>%n", curMachine.getData().getName(), curMachine.getData().getBal());
+            curMachine = machineList.next();
+         }
+         
+         
+         out.close();
+         return true;
+      }catch(FileNotFoundException e){
+         e.printStackTrace();
+         return false;
+      }
    }
    
    /**
@@ -198,5 +230,6 @@ class VendingMachine implements Searchable{
    public String toString(){
       return String.format("Report%nName: %s%nBalance: %.2f%n%s", name, getBal(), sodaList);
    }
+   
    
 }

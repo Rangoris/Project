@@ -32,6 +32,9 @@ class ImplementationTesting{
       }
       
       LinkedList machineList = VendingMachine.getMachines();
-      System.out.println(VendingMachine.getMachines().queryByIndex(1));
+      System.out.println(machineList);
+      VendingMachine.saveData("Test.txt");
+      //VendingMachine.getMachines().getCursor().getData();
+      //System.out.println(avm.getName());
    }
 }

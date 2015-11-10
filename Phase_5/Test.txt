@@ -1,0 +1,8 @@
+<Machine>
+   <Name>Dining Hall</Name>
+   <bal>1.25</bal>
+</Machine>
+<Machine>
+   <Name>Dining Hall2</Name>
+   <bal>0.0</bal>
+</Machine>

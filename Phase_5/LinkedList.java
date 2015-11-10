@@ -1,6 +1,7 @@
 class LinkedList<D>{
    private Node<D> head;
    private Node<D> tail;
+   private Node<D> cursor;
    private int length;
    
    /** constructor accepting firstNode*/
@@ -8,6 +9,7 @@ class LinkedList<D>{
       this.length = 0;
       setHead(_firstNode);
       setTail(_firstNode);
+      cursor = this.tail;
    }
    
    /** constructor accepting no arguments*/
@@ -15,6 +17,7 @@ class LinkedList<D>{
       this.length = 0;
       this.head = null;
       this.tail = null;
+      cursor = this.tail;
    }
    
    public Node<D> getHead(){
@@ -27,7 +30,7 @@ class LinkedList<D>{
    
    private boolean setHead(Node<D> head){
       if(head == null){return false;}
-      if(this.tail == null){ this.tail = head;}
+      if(this.tail == null){ setTail(head);}
       this.head = head;
       return true;
    }
@@ -36,6 +39,7 @@ class LinkedList<D>{
       if(tail == null){return false;}
       if(this.head == null){this.head = tail;}
       this.tail = tail;
+      cursor = this.tail;
       return true;
    }
    
@@ -62,7 +66,7 @@ class LinkedList<D>{
             //remove item
             if(prevNode != null){
                prevNode.setNextNode(curNode.getNextNode());
-            }else{ this.tail = curNode.getNextNode();}
+            }else{ setTail(curNode.getNextNode());}
             curNode.setNextNode(null);
             curNode = null;
             this.length--;
@@ -72,6 +76,21 @@ class LinkedList<D>{
          curNode = curNode.getNextNode();
       }
       return false;
+   }
+   
+   public Node<D> next(){
+      Node<D> out = this.cursor.getNextNode();
+      cursor = (cursor == null)? this.tail: cursor.getNextNode();
+      return out;
+   }
+   
+   public boolean hasNext(){
+      if(cursor == null){return false;}      
+      return (cursor.getNextNode() == null)? false: true;
+   }
+   
+   public Node<D> getCursor(){
+      return this.cursor;
    }
    
    /**
