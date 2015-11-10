@@ -68,4 +68,8 @@ class Soda implements Searchable{
    public String toString(){
       return String.format("%s:\t%d\t%.2f", name, quantity, price);
    }
+   
+   public String getSaveData(){
+      return String.format("%n      <Soda>%n         <SodaName>%s</SodaName>%n         <SodaPrice>%f</SodaPrice>%n         <SodaQuantity>%d</SodaQuantity>%n      </Soda>", name, price, quantity);
+   }
 }

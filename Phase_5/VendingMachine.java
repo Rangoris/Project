@@ -62,6 +62,11 @@ class VendingMachine implements Searchable{
       return result;
    }
    
+   public String getSodaName(int index){
+      Soda aSoda = selectSoda(index);
+      return (aSoda == null)? "" :aSoda.getName();
+   }
+   
    /**
    gets the current balance
    @return balance of all cash in soda machine
@@ -177,6 +182,11 @@ class VendingMachine implements Searchable{
       return sodaList.getLength();
    }
    
+   public String getSodaSaveData(int index){
+      Soda aSoda = selectSoda(index);
+      return (aSoda == null)? "": aSoda.getSaveData();
+   }
+   
    //____________________________________
    
    /**
@@ -211,7 +221,7 @@ class VendingMachine implements Searchable{
          Node<VendingMachine> curMachine = machineList.getCursor();
          
          while(curMachine != null){
-            out.printf("<Machine>%n   <Name>%s</Name>%n   <bal>%s</bal>%n</Machine>%n", curMachine.getData().getName(), curMachine.getData().getBal());
+            out.printf("<Machine>%n   <Name>%s</Name>%n      <bal>%s</bal>%s%n</Machine>%n", curMachine.getData().getName(), curMachine.getData().getBal(), getSodaOutput(curMachine.getData()));
             curMachine = machineList.next();
          }
          
@@ -222,6 +232,14 @@ class VendingMachine implements Searchable{
          e.printStackTrace();
          return false;
       }
+   }
+   
+   public static String getSodaOutput(VendingMachine aMachine){
+      String output = "";
+      for(int x = 1; x <= aMachine.getNumSodas(); x++){
+         output += aMachine.getSodaSaveData(x);
+      }
+      return output;
    }
    
    /**
