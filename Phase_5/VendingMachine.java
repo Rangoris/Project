@@ -263,7 +263,6 @@ class VendingMachine implements Searchable, Persistable{
          while(in.hasNext()){
             String VendData = "";
             String inText = in.nextLine();
-            //System.out.println(inText);
             if(inText.equals("<Machine>")){
                loadCount++;
                VendingMachine aVendMachine = new VendingMachine();

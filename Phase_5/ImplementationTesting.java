@@ -1,7 +1,7 @@
 class ImplementationTesting{
    public static void main(String args[]){
       
-      /*try{
+      try{
          VendingMachine aVM = new VendingMachine("Dining Hall");
          aVM.addSoda("Red Bull", 2.5);
          aVM.addSoda("Sprite", 1.5);
@@ -45,11 +45,13 @@ class ImplementationTesting{
          System.out.println("error!");
       }
       
-      //removes a machine 
-      VendingMachine.removeMachine("Dining Hall 2");
+      //System.out.println(VendingMachine.getMachines());
+      VendingMachine.saveData("Test.txt");
       
-      System.out.println(VendingMachine.getMachines());
-      VendingMachine.saveData("Test.txt");*/
+      VendingMachine.removeMachine("Dining Hall");
+      VendingMachine.removeMachine("Dining Hall 2");
+      VendingMachine.removeMachine("Dining Hall 3");
+      
       VendingMachine.loadData("Test.txt");
       System.out.println(VendingMachine.getMachines());
    }

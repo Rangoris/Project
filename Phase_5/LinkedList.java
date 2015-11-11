@@ -36,7 +36,7 @@ class LinkedList<D>{
    }
    
    private boolean setTail(Node<D> tail){
-      if(tail == null){return false;}
+      //if(tail == null){return false;}
       if(this.head == null){this.head = tail;}
       this.tail = tail;
       cursor = this.tail;
@@ -60,14 +60,14 @@ class LinkedList<D>{
       Node<D> prevNode = null;
       Node<D> curNode = this.tail;
       
-      for(int x = 0; x < length; x++){
+      for(int x = 1; x <= length; x++){
          Searchable anItem = (Searchable)curNode.getData();
          if(anItem.getName().equals(name)){
             //remove item
             if(prevNode != null){
                prevNode.setNextNode(curNode.getNextNode());
-            }else{ setTail(curNode.getNextNode());}
-            curNode.setNextNode(null);
+            }else{setTail(curNode.getNextNode());}
+            curNode.destroy();
             curNode = null;
             this.length--;
             return true;
@@ -99,8 +99,9 @@ class LinkedList<D>{
    */
    public Node<D> query(String name){
       Node<D> curNode = this.tail;
+      if(curNode == null){return null;}
       
-      for(int x = 0; x < length; x++){
+      for(int x = 1; x <= length; x++){
          Searchable anItem = (Searchable)curNode.getData();
          if(anItem.getName().equals(name)){ return curNode;}
          curNode = curNode.getNextNode();
@@ -124,6 +125,7 @@ class LinkedList<D>{
    public String toString(){
       String output = "";
       Node<D> curNode = this.tail;
+      if(curNode == null){return "";}
       
       for(int x =0; x < length; x++){
          output += String.format("=>%s%n", curNode);
