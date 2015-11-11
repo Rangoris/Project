@@ -1,4 +1,4 @@
-class Soda implements Searchable{
+class Soda implements Searchable, Persistable{
    public static int MAX_STOCK = 40;
    private String name;
    private double price;
@@ -70,6 +70,10 @@ class Soda implements Searchable{
    }
    
    public String getSaveData(){
-      return String.format("%n      <Soda>%n         <SodaName>%s</SodaName>%n         <SodaPrice>%f</SodaPrice>%n         <SodaQuantity>%d</SodaQuantity>%n      </Soda>", name, price, quantity);
+      return String.format("%n      <Soda>%n         <SodaName> %s </SodaName>%n         <SodaPrice> %f </SodaPrice>%n         <SodaQuantity> %d </SodaQuantity>%n      </Soda>", name, price, quantity);
    }
+   
+   /*public void setLoadData(String data){
+      
+   }*/
 }

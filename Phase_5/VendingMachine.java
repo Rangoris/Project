@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Scanner;
 
-class VendingMachine implements Searchable{
+class VendingMachine implements Searchable, Persistable{
    public static int MAX_SODA_TYPES = 10;
    private static LinkedList<VendingMachine> machineList = new LinkedList<VendingMachine>();
    private LinkedList<Soda> sodaList = new LinkedList<Soda>();   
@@ -13,21 +13,33 @@ class VendingMachine implements Searchable{
    double balance;
    
    public VendingMachine(String _name) throws IllegalArgumentException{
-      this.name = _name;
-      //make sure it is not already listed
-      if(machineList.query(_name) == null){
-         machineList.add(new Node<VendingMachine>(this));
-      }else{
-         throw new IllegalArgumentException(String.format("Can not create this machine, %s already exists!", this.name));
-      }
-   }  
+      setName(_name);
+   } 
+    
    
    public VendingMachine(){
-      this("");
+      this.name = "NOT-SET";
    }
    
    public String getName(){
       return this.name;
+   }
+   
+   public void setName(String name) throws IllegalArgumentException{
+      this.name = name;
+      if(machineList.query(name) == null){
+         machineList.add(new Node<VendingMachine>(this));
+      }else{
+         throw new IllegalArgumentException(String.format("Can not create this machine, %s already exists!", this.name));
+      }
+   }
+   
+   public void addSoda(){
+      addSoda("NOT NAMED", 0);
+   }
+   
+   public boolean addSoda(String sodaName){
+      return addSoda(sodaName, 0);
    }
    
    public boolean addSoda(String sodaName, double price){
@@ -37,8 +49,12 @@ class VendingMachine implements Searchable{
       return sodaList.add(new Node<Soda>(aSoda));
    }
    
-   public boolean addSoda(String sodaName){
-      return addSoda(sodaName, 0);
+   public boolean addSoda(String sodaName, double price, int quantity){
+      if(sodaName.length() <= 0){return false;}
+      if(price < 0){return false;}
+      if(quantity < 0){return false;}
+      Soda aSoda = new Soda(sodaName, price, quantity);
+      return sodaList.add(new Node<Soda>(aSoda));
    }
    
    public boolean removeSoda(String soda){
@@ -73,6 +89,15 @@ class VendingMachine implements Searchable{
    */
    public double getBal(){
       return this.balance;
+   }
+   
+   public boolean setBal(double balance){
+      if(balance >= 0){
+         this.balance = balance;
+         return true;
+      }else{
+         return false;
+      }
    }
    
    /**
@@ -163,7 +188,7 @@ class VendingMachine implements Searchable{
    @param soda name
    @param price
    */
-   public boolean setPrice(String sodaName, double price){
+   public boolean setSodaPrice(String sodaName, double price){
       Soda aSoda = selectSoda(sodaName);
       return (aSoda == null)? false: aSoda.setPrice(price);
    }
@@ -173,7 +198,7 @@ class VendingMachine implements Searchable{
    @param soda index
    @param price
    */
-   public boolean setPrice(int sodaIndex, double price){
+   public boolean setSodaPrice(int sodaIndex, double price){
       Soda aSoda = selectSoda(sodaIndex);
       return (aSoda == null)? false: aSoda.setPrice(price);
    }
@@ -205,27 +230,15 @@ class VendingMachine implements Searchable{
       return machineList.remove(name);
    }
    
-   //To Do
-   public static boolean loadData(String fileName){
-      try{
-         Scanner in = new Scanner(new FileInputStream(new File(fileName)));
-      }catch(FileNotFoundException e){
-         e.printStackTrace();
-      }
-      return false;
-   }
-   
    public static boolean saveData(String fileName){
       try{
          PrintWriter out = new PrintWriter(new FileOutputStream(new File(fileName)));
          Node<VendingMachine> curMachine = machineList.getCursor();
          
          while(curMachine != null){
-            out.printf("<Machine>%n   <Name>%s</Name>%n      <bal>%s</bal>%s%n</Machine>%n", curMachine.getData().getName(), curMachine.getData().getBal(), getSodaOutput(curMachine.getData()));
+            out.printf(curMachine.getData().getSaveData());
             curMachine = machineList.next();
          }
-         
-         
          out.close();
          return true;
       }catch(FileNotFoundException e){
@@ -234,11 +247,127 @@ class VendingMachine implements Searchable{
       }
    }
    
-   public static String getSodaOutput(VendingMachine aMachine){
-      String output = "";
-      for(int x = 1; x <= aMachine.getNumSodas(); x++){
-         output += aMachine.getSodaSaveData(x);
+   public String getSaveData(){
+      String sodaInfo = "";
+      for(int x = 1; x <= getNumSodas(); x++){
+         sodaInfo += getSodaSaveData(x);
       }
+      String output = String.format("<Machine>%n   <Name>%s</Name>%n      <bal> %s </bal>%s%n</Machine>%n", getName(), getBal(), sodaInfo);
+      return output;
+   }
+   
+   public static boolean loadData(String fileName){
+      try{
+         Scanner in = new Scanner(new FileInputStream(new File(fileName)));
+         int loadCount = 0;
+         while(in.hasNext()){
+            String VendData = "";
+            String inText = in.nextLine();
+            //System.out.println(inText);
+            if(inText.equals("<Machine>")){
+               loadCount++;
+               VendingMachine aVendMachine = new VendingMachine();
+               
+               while(in.hasNext()){
+                  String nextLine = in.nextLine();
+                  if(nextLine.equals("</Machine>")){ break;}
+                  VendData += nextLine;
+               }
+               aVendMachine.setLoadData(VendData);
+            }
+         }
+         in.close();
+      }catch(FileNotFoundException e){
+         e.printStackTrace();
+      }
+      return false;
+   }
+   
+   public void setLoadData(String data){
+      final String NAME_TAG = "<Name>";
+      final String END_NAME_TAG = "</Name>";
+      
+      final String BAL_TAG = "<bal>";
+      final String END_BAL_TAG = "</bal>";
+      
+      final String SODA_TAG = "<Soda>";
+      final String END_SODA_TAG = "</Soda>";
+      
+      final String SODA_NAME_TAG = "<SodaName>";
+      final String END_SODA_NAME_TAG = "</SodaName>";
+      
+      final String SODA_PRICE = "<SodaPrice>";
+      final String END_SODA_PRICE = "</SodaPrice>";
+      
+      final String SODA_QUANTITY = "<SodaQuantity>";
+      final String END_SODA_QUANTITY = "</SodaQuantity>"; 
+      
+      //load in name
+      int nameStart = data.indexOf(NAME_TAG);
+      int nameEnd = data.indexOf(END_NAME_TAG);
+      if(nameStart >= 0 && nameEnd >= 0){
+         nameStart += NAME_TAG.length();
+         String machName = data.substring(nameStart, nameEnd);
+         if(machName.length() > 0){
+            try{
+            setName(machName);
+            }catch(IllegalArgumentException e){
+               e.printStackTrace();
+            }
+         }
+      }
+      
+      //load in bal
+      int balStart = data.indexOf(BAL_TAG);
+      int balEnd = data.indexOf(END_BAL_TAG);
+      balStart += BAL_TAG.length();
+      String strBal = data.substring(balStart, balEnd).trim();
+      double bal = 0;
+      
+      try{
+         bal = Double.parseDouble(strBal);
+         setBal(bal);
+      }catch(NumberFormatException e){
+         e.printStackTrace();
+      }
+      
+      //load sodas
+      int sodaDataStart = data.indexOf(SODA_TAG);
+      if(sodaDataStart >= 0){
+         String sodaData = data.substring(sodaDataStart);
+         Scanner sodaScan = new Scanner(sodaData);
+         sodaScan.useDelimiter(SODA_TAG);
+         while(sodaScan.hasNext()){
+            //String soda = sodaScan.next();
+            String sodaInfo = sodaScan.next();
+            //sodaInfo = sodaInfo.substring(0, sodaInfo.indexOf(END_SODA_TAG));
+            
+            String sodaName = parseData(SODA_NAME_TAG, END_SODA_NAME_TAG, sodaInfo).trim();
+            String strSodaPrice = parseData(SODA_PRICE, END_SODA_PRICE, sodaInfo).trim();
+            String strSodaQuantity = parseData(SODA_QUANTITY, END_SODA_QUANTITY, sodaInfo).trim();
+            double sodaPrice = -99;
+            int sodaQuantity = -99;
+            
+            try{
+               sodaPrice = Double.parseDouble(strSodaPrice);
+               sodaQuantity = Integer.parseInt(strSodaQuantity);
+            }catch(NumberFormatException e){
+               e.printStackTrace();
+            }
+            
+            addSoda(sodaName, sodaPrice, sodaQuantity);
+            
+         }
+         sodaScan.close();
+      }
+   }
+   
+   public static String parseData(String fTag, String lTag, String data){
+
+      int startPos = data.indexOf(fTag) + fTag.length();
+      int endPos = data.indexOf(lTag);
+      String output = data.substring(startPos, endPos);
+      
       return output;
    }
    
