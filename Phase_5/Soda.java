@@ -1,15 +1,13 @@
-class Soda implements Searchable{
+class Soda implements Searchable, Persistable{
    public static int MAX_STOCK = 40;
    private String name;
    private double price;
-   private double balance;
    private int quantity;
    
    //name, price, quantity constructor 
    public Soda(String _name, double _price, int _quantity){
       this.name = _name;
       this.price = _price;
-      this.balance = 0;
       this.quantity = _quantity;
    }
    
@@ -48,18 +46,19 @@ class Soda implements Searchable{
       this.name = name;
    }
    
-   public void reStock(){
-      setQuantity(MAX_STOCK);
+   public boolean reStock(){
+      return reStock(MAX_STOCK - quantity);
    }
    
-   public double getBal(){
-      return this.balance;
+   public boolean reStock(int amountToStock){
+      if(amountToStock + quantity > MAX_STOCK){ return false;}
+      this.quantity += amountToStock;
+      return true;
    }
    
    public boolean buySoda(){
       if(quantity > 0){
          quantity--;
-         balance += price;
          return true;
       }else{
          return false;
@@ -67,6 +66,14 @@ class Soda implements Searchable{
    }
    
    public String toString(){
-      return String.format("%s:\t%d\t%.2f\t%.2f", name, quantity, price, balance);
+      return String.format("%s:\t%d\t%.2f", name, quantity, price);
    }
+   
+   public String getSaveData(){
+      return String.format("%n      <Soda>%n         <SodaName> %s </SodaName>%n         <SodaPrice> %f </SodaPrice>%n         <SodaQuantity> %d </SodaQuantity>%n      </Soda>", name, price, quantity);
+   }
+   
+   /*public void setLoadData(String data){
+      
+   }*/
 }

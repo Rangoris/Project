@@ -1,0 +1,57 @@
+<Machine>
+   <Name>Dining Hall</Name>
+      <bal> 1.25 </bal>
+      <Soda>
+         <SodaName> Red Bull </SodaName>
+         <SodaPrice> 1.250000 </SodaPrice>
+         <SodaQuantity> 39 </SodaQuantity>
+      </Soda>
+      <Soda>
+         <SodaName> Sprite </SodaName>
+         <SodaPrice> 3.500000 </SodaPrice>
+         <SodaQuantity> 0 </SodaQuantity>
+      </Soda>
+      <Soda>
+         <SodaName> Coca-cola </SodaName>
+         <SodaPrice> 1.250000 </SodaPrice>
+         <SodaQuantity> 0 </SodaQuantity>
+      </Soda>
+</Machine>
+<Machine>
+   <Name>Dining Hall 2</Name>
+      <bal> 0.0 </bal>
+      <Soda>
+         <SodaName> Dr. Pepper </SodaName>
+         <SodaPrice> 1.500000 </SodaPrice>
+         <SodaQuantity> 0 </SodaQuantity>
+      </Soda>
+      <Soda>
+         <SodaName> Dr. Thunder </SodaName>
+         <SodaPrice> 1.250000 </SodaPrice>
+         <SodaQuantity> 0 </SodaQuantity>
+      </Soda>
+      <Soda>
+         <SodaName> Mr. Pibb </SodaName>
+         <SodaPrice> 1.250000 </SodaPrice>
+         <SodaQuantity> 0 </SodaQuantity>
+      </Soda>
+</Machine>
+<Machine>
+   <Name>Dining Hall 3</Name>
+      <bal> 0.0 </bal>
+      <Soda>
+         <SodaName> Dr. Pepper </SodaName>
+         <SodaPrice> 1.500000 </SodaPrice>
+         <SodaQuantity> 0 </SodaQuantity>
+      </Soda>
+      <Soda>
+         <SodaName> Monster </SodaName>
+         <SodaPrice> 2.250000 </SodaPrice>
+         <SodaQuantity> 0 </SodaQuantity>
+      </Soda>
+      <Soda>
+         <SodaName> liter-o-cola </SodaName>
+         <SodaPrice> 50.250000 </SodaPrice>
+         <SodaQuantity> 0 </SodaQuantity>
+      </Soda>
+</Machine>

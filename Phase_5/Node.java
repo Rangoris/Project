@@ -28,6 +28,10 @@ class Node<D>{
    public String toString(){
       return this.getData().toString();
    }
-
+   
+   public void destroy(){
+      nextNode = null;
+      data = null;
+   }
    
 }
