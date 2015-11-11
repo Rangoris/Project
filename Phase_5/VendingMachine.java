@@ -119,24 +119,30 @@ class VendingMachine implements Searchable, Persistable{
    @param soda name
    @return validates if reStock was successfull;
    */
-   public boolean reStock(String sodaName){
+   public boolean reStockSoda(String sodaName){
       Soda aSoda = selectSoda(sodaName);
       return (aSoda == null)? false:aSoda.reStock();  
    }
    
-   public boolean reStock(String sodaName, int amountToStock){
+   public boolean reStockSoda(String sodaName, int amountToStock){
       Soda aSoda = selectSoda(sodaName);
       return (aSoda == null)? false: aSoda.reStock(amountToStock);
    }
    
-   public boolean reStock(int sodaIndex, int amountToStock){
+   public boolean reStockSoda(int sodaIndex, int amountToStock){
       Soda aSoda = selectSoda(sodaIndex);
       return (aSoda == null)? false : aSoda.reStock(amountToStock);
    }
    
-   public boolean reStock(int sodaIndex){
+   public boolean reStockSoda(int sodaIndex){
       Soda aSoda = selectSoda(sodaIndex);
       return (aSoda == null)? false: aSoda.reStock();
+   }
+   
+   public void reStock(){
+      for(int x = 1; x <= sodaList.getLength(); x++){
+         reStockSoda(x);
+      }
    }
    
    /**

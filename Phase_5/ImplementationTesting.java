@@ -8,8 +8,8 @@ class ImplementationTesting{
          aVM.addSoda("Coca-cola", 1.25);
          
          //below two lines are equivelant (one selects soda by one based index, one selects by name)
-         aVM.reStock(1);
-         aVM.reStock("Red Bull");
+         aVM.reStockSoda(1);
+         aVM.reStockSoda("Red Bull");
          
          //below two lines are equivelant (one selects soda by name, one selects by onebased index)
          aVM.setSodaPrice("Red Bull", 1.25);
@@ -32,6 +32,7 @@ class ImplementationTesting{
          aVM2.addSoda("Dr. Pepper", 1.50);
          aVM2.addSoda("Dr. Thunder", 1.25);
          aVM2.addSoda("Mr. Pibb", 1.25);
+         aVM2.reStock();
       }catch(IllegalArgumentException e){
          System.out.println("error!");
       }
@@ -46,13 +47,13 @@ class ImplementationTesting{
       }
       
       //System.out.println(VendingMachine.getMachines());
-      VendingMachine.saveData("Test.txt");
+      //VendingMachine.saveData("Test.txt");
       
-      VendingMachine.removeMachine("Dining Hall");
-      VendingMachine.removeMachine("Dining Hall 2");
-      VendingMachine.removeMachine("Dining Hall 3");
+      //VendingMachine.removeMachine("Dining Hall");
+      //VendingMachine.removeMachine("Dining Hall 2");
+      //VendingMachine.removeMachine("Dining Hall 3");
       
-      VendingMachine.loadData("Test.txt");
+      //VendingMachine.loadData("Test.txt");
       System.out.println(VendingMachine.getMachines());
    }
 }
